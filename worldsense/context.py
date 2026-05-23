@@ -29,6 +29,15 @@ def extract_implicit_context(user_message: str, proposed_response: str | None = 
         assumptions.append("preference_criteria_are_underspecified")
         missing_information.append("decision_criteria")
 
+    if any(word in text for word in ["costoso", "expensive", "pagamento", "purchase"]):
+        signals.append("financial_commitment")
+        missing_information.extend(["budget", "purchase_confirmation"])
+
+    if any(word in text for word in ["documento", "numero privato", "private number", "credentials"]):
+        signals.append("privacy_sensitive_data")
+        constraints.append("data_minimization")
+        missing_information.extend(["recipient", "sharing_consent"])
+
     return ImplicitContext(
         signals=sorted(set(signals)),
         constraints=sorted(set(constraints)),
@@ -50,4 +59,3 @@ def build_world_state(user_message: str, implicit_context: ImplicitContext) -> W
         current_state=user_message[:120] or "unknown",
         uncertainties=implicit_context.missing_information,
     )
-

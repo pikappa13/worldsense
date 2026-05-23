@@ -102,8 +102,20 @@ worldsense action --tool filesystem.delete --target /tmp/data --description "Del
 - Implicit context extraction: surface constraints the user did not spell out.
 - Consequence simulation: list likely practical consequences.
 - Risk classification: classify severity using a consistent taxonomy.
+- Reality constraints: detect unrealistic plans and unsafe operational assumptions.
 - Action safety gate: block or require confirmation for risky tool use.
+- Uncertainty detection: flag missing context and unsupported confidence.
 - Rewrite guidance: suggest how an LLM response should become safer and more practical.
+
+## Documentation
+
+- [Project blueprint](docs/PROJECT_BLUEPRINT.md)
+- [Risk taxonomy](docs/TAXONOMY.md)
+- [Practical examples](docs/EXAMPLES.md)
+- [Internal LLM prompts](docs/INTERNAL_PROMPTS.md)
+- [Project name options](docs/NAMES.md)
+- [Benchmark plan](benchmark/README.md)
+- [Seed dataset](data/seed_scenarios.jsonl)
 
 ## Initial Risk Categories
 

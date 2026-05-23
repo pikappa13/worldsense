@@ -49,9 +49,15 @@ packages = ["worldsense"]
 [tool.hatch.build.targets.sdist]
 include = [
   "/worldsense",
+  "/benchmark",
+  "/data",
+  "/docs",
   "/examples",
   "/tests",
   "/README.md",
+  "/CONTRIBUTING.md",
+  "/SECURITY.md",
+  "/CODE_OF_CONDUCT.md",
   "/LICENSE",
   "/pyproject.toml"
 ]
@@ -62,4 +68,3 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-

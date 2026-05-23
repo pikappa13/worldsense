@@ -130,6 +130,24 @@ class SocialAssessment(BaseModel):
     safer_framing: str | None = None
 
 
+class ConstraintViolation(BaseModel):
+    constraint_type: str
+    description: str
+    severity: RiskLevel = RiskLevel.MEDIUM
+    evidence: list[str] = Field(default_factory=list)
+    mitigation: str | None = None
+
+
+class UncertaintyAssessment(BaseModel):
+    assumptions: list[str] = Field(default_factory=list)
+    unsupported_claims: list[str] = Field(default_factory=list)
+    missing_context: list[str] = Field(default_factory=list)
+    confidence: float = Field(default=0.5, ge=0.0, le=1.0)
+    should_ask_user: bool = False
+    should_search_external_sources: bool = False
+    should_refuse_to_guess: bool = False
+
+
 class RewriteGuidance(BaseModel):
     rewrite_strategy: str | None = None
     must_include: list[str] = Field(default_factory=list)
@@ -146,6 +164,7 @@ class RealityAnalysis(BaseModel):
     recommendations: list[Recommendation] = Field(default_factory=list)
     action_assessment: ActionAssessment | None = None
     social_assessment: SocialAssessment | None = None
+    constraint_violations: list[ConstraintViolation] = Field(default_factory=list)
+    uncertainty_assessment: UncertaintyAssessment | None = None
     rewrite_guidance: RewriteGuidance | None = None
     triggered_rules: list[str] = Field(default_factory=list)
-

@@ -10,6 +10,8 @@ INTENT_KEYWORDS = {
     "resign_impulsively": ["licenziarmi", "oggi"],
     "food_safety": ["cibo", "fuori"],
     "expensive_purchase": ["comprare", "costoso"],
+    "impossible_trip": ["un giorno", "venezia", "milano"],
+    "privacy_sensitive_request": ["documento", "invia"],
 }
 
 
@@ -30,4 +32,3 @@ def parse_intent(user_message: str) -> IntentAnalysis:
         confidence=0.75 if len(matches) == 1 else 0.6,
         ambiguity_level=RiskLevel.LOW if len(matches) == 1 else RiskLevel.MEDIUM,
     )
-

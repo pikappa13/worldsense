@@ -61,3 +61,63 @@
   confirmation_prompt: "Please confirm the item, price, budget, and payment method."
   safer_alternative: "Compare options and ask for budget before purchasing."
 
+- id: destructive_database_action
+  action_type: database.query
+  keywords: ["drop table", "truncate", "delete from", "drop database"]
+  risk_level: critical
+  side_effect_type: destructive
+  reversible: false
+  requires_confirmation: true
+  requires_context: ["backup_available", "user_confirmation", "command_reviewed"]
+  block_without_required_context: true
+  should_warn: true
+  reasons:
+    - "Database destructive operations can cause production data loss."
+    - "Backup, review, and explicit confirmation are required."
+  confirmation_prompt: "Please confirm backup status, environment, and exact database command."
+  safer_alternative: "Run a read-only query or transaction-wrapped dry-run first."
+
+- id: calendar_bulk_update
+  action_type: calendar.update
+  keywords: ["cancel all", "delete all", "sposta tutti", "cancella tutti"]
+  risk_level: medium
+  side_effect_type: external_side_effect
+  reversible: true
+  requires_confirmation: true
+  requires_context: ["user_confirmation"]
+  block_without_required_context: true
+  should_warn: true
+  reasons:
+    - "Bulk calendar changes can disrupt other people and schedules."
+  confirmation_prompt: "Please confirm the affected events before I update the calendar."
+  safer_alternative: "Show the list of events first."
+
+- id: public_social_post
+  action_type: social.post
+  keywords: ["publish", "post", "pubblica"]
+  risk_level: medium
+  side_effect_type: public_communication
+  reversible: false
+  requires_confirmation: true
+  requires_context: ["draft_reviewed", "user_confirmation"]
+  block_without_required_context: true
+  should_warn: true
+  reasons:
+    - "Public posts can create reputation and relationship risk."
+  confirmation_prompt: "Please review the final public post and audience before publishing."
+  safer_alternative: "Prepare a draft instead of publishing immediately."
+
+- id: permissions_broad_write
+  action_type: system.permissions
+  keywords: ["chmod 777", "grant all", "everyone full control"]
+  risk_level: high
+  side_effect_type: security_sensitive
+  reversible: true
+  requires_confirmation: true
+  requires_context: ["command_reviewed", "user_confirmation"]
+  block_without_required_context: true
+  should_warn: true
+  reasons:
+    - "Broad permissions can weaken security."
+  confirmation_prompt: "Please confirm the exact permission change and target path."
+  safer_alternative: "Grant the narrowest required permission to a specific user or group."

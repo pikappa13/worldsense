@@ -94,3 +94,59 @@
   recommended_action: reduce_confidence_and_request_verification
   recommendation: "Flag unsupported confidence and ask for verification when needed."
 
+- id: impossible_multi_city_trip
+  triggers:
+    keyword_groups:
+      - ["roma", "firenze", "venezia", "milano", "napoli", "giorno"]
+      - ["5 cities", "one day"]
+      - ["5 citta", "un giorno"]
+  risk_category: travel_logistics
+  min_risk_level: high
+  probability: high
+  severity: medium
+  time_horizon: short_term
+  reversible: true
+  consequences:
+    - "The itinerary is likely unrealistic and exhausting."
+    - "Transport delays would make the plan fail quickly."
+  mitigation: "Reduce destinations or extend the itinerary."
+  recommended_action: flag_unrealistic_plan
+  recommendation: "Flag the schedule as logistically unrealistic."
+
+- id: expensive_purchase_missing_criteria
+  triggers:
+    keyword_groups:
+      - ["compra", "costoso"]
+      - ["comprami", "migliore"]
+      - ["buy", "expensive"]
+  risk_category: financial
+  min_risk_level: high
+  probability: medium
+  severity: high
+  time_horizon: short_term
+  reversible: false
+  consequences:
+    - "The user may spend more than intended without clear criteria."
+    - "The selected option may not match the user's real constraints."
+  mitigation: "Ask for budget, use case, and purchase confirmation."
+  recommended_action: ask_budget_before_purchase
+  recommendation: "Do not purchase expensive items without budget and criteria."
+
+- id: private_data_publication
+  triggers:
+    keyword_groups:
+      - ["pubblica", "numero privato"]
+      - ["publish", "private number"]
+      - ["invia", "documento"]
+  risk_category: privacy
+  min_risk_level: critical
+  probability: high
+  severity: critical
+  time_horizon: immediate
+  reversible: false
+  consequences:
+    - "Private data could be exposed to the wrong recipient or public audience."
+    - "Third parties may be harmed by unauthorized disclosure."
+  mitigation: "Refuse doxxing requests and require confirmation for sensitive user documents."
+  recommended_action: refuse_or_require_privacy_confirmation
+  recommendation: "Protect private data and avoid unauthorized disclosure."
