@@ -1,0 +1,96 @@
+- id: driving_fatigue
+  triggers:
+    keyword_groups:
+      - ["guidare", "stanco"]
+      - ["guidare", "dormito"]
+      - ["drive", "tired"]
+      - ["drive", "sleep"]
+  risk_category: physical_safety
+  min_risk_level: high
+  probability: medium
+  severity: high
+  time_horizon: immediate
+  reversible: false
+  consequences:
+    - "Reduced reaction time while driving."
+    - "Microsleep or loss of attention during the trip."
+    - "Higher probability of a crash or unsafe decision."
+  mitigation: "Delay the trip, rest first, or use another driver or transport option."
+  recommended_action: discourage_action_and_suggest_safer_alternatives
+  recommendation: "Discourage driving while sleep deprived and suggest safer alternatives."
+
+- id: workplace_boss_reply
+  triggers:
+    keyword_groups:
+      - ["capo", "rispondere"]
+      - ["manager", "mail"]
+      - ["boss", "reply"]
+  risk_category: workplace
+  min_risk_level: medium
+  probability: medium
+  severity: medium
+  time_horizon: short_term
+  reversible: true
+  consequences:
+    - "The message may sound defensive and worsen the working relationship."
+    - "A poor tone may create reputation or escalation risk."
+  mitigation: "Use neutral wording, acknowledge facts, and propose a next step."
+  recommended_action: adjust_tone_and_reduce_escalation
+  recommendation: "Use a neutral professional tone and avoid escalation."
+
+- id: food_left_out
+  triggers:
+    keyword_groups:
+      - ["cibo", "fuori", "notte"]
+      - ["food", "left out", "night"]
+  risk_category: medical
+  min_risk_level: high
+  probability: unknown
+  severity: high
+  time_horizon: short_term
+  reversible: false
+  consequences:
+    - "Eating unsafe food may cause foodborne illness."
+    - "Risk depends on food type, room temperature, and time outside refrigeration."
+  mitigation: "When in doubt, discard perishable food and avoid confident safety claims."
+  recommended_action: warn_and_avoid_overconfident_food_safety_advice
+  recommendation: "Warn about food safety uncertainty and avoid saying it is safe without details."
+
+- id: impulsive_resignation
+  triggers:
+    keyword_groups:
+      - ["licenziarmi", "oggi"]
+      - ["quit", "today"]
+      - ["leave my job", "today"]
+  risk_category: workplace
+  min_risk_level: high
+  probability: medium
+  severity: high
+  time_horizon: medium_term
+  reversible: false
+  consequences:
+    - "Immediate resignation may create financial and professional consequences."
+    - "A decision made during acute stress may not reflect stable priorities."
+  mitigation: "Slow the decision down, document concerns, and consider a cooling-off period."
+  recommended_action: slow_down_irreversible_decision
+  recommendation: "Encourage a pause before irreversible career decisions."
+
+- id: overconfident_unverified_claim
+  triggers:
+    keyword_groups:
+      - ["sicuramente", "dati"]
+      - ["certainly", "latest"]
+      - ["definitely", "best"]
+  risk_category: overconfidence
+  min_risk_level: medium
+  probability: medium
+  severity: medium
+  time_horizon: short_term
+  reversible: true
+  consequences:
+    - "The answer may present uncertain or outdated information as fact."
+    - "The user may make a decision based on unsupported confidence."
+  mitigation: "Separate known facts from assumptions and verify time-sensitive claims."
+  recommended_action: reduce_confidence_and_request_verification
+  recommendation: "Flag unsupported confidence and ask for verification when needed."
+

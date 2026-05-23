@@ -1,0 +1,63 @@
+- id: destructive_file_action
+  action_type: filesystem.delete
+  keywords: ["delete", "remove", "cancella", "rm -rf"]
+  risk_level: high
+  side_effect_type: destructive
+  reversible: false
+  requires_confirmation: true
+  requires_context: ["user_confirmation", "exact_target"]
+  block_without_required_context: true
+  should_warn: true
+  reasons:
+    - "File deletion can cause permanent data loss."
+    - "The target must be explicit before proceeding."
+  confirmation_prompt: "Please confirm the exact path to delete and that a backup is available."
+  safer_alternative: "List matching files first or run a dry-run before deleting."
+
+- id: shell_dangerous_command
+  action_type: shell.run
+  keywords: ["rm -rf", "format", "del /s", "chmod 777", "sudo"]
+  risk_level: high
+  side_effect_type: destructive_or_security_sensitive
+  reversible: false
+  requires_confirmation: true
+  requires_context: ["user_confirmation", "command_reviewed"]
+  block_without_required_context: true
+  should_warn: true
+  reasons:
+    - "The command may modify or destroy data or weaken security."
+    - "Dangerous shell commands require explicit review."
+  confirmation_prompt: "Please confirm the command and target before execution."
+  safer_alternative: "Use a dry-run, list-only command, or narrower target."
+
+- id: send_external_email
+  action_type: email.send
+  keywords: ["send", "email", "mail", "invia"]
+  risk_level: medium
+  side_effect_type: external_side_effect
+  reversible: false
+  requires_confirmation: true
+  requires_context: ["recipient", "draft_reviewed", "user_confirmation"]
+  block_without_required_context: true
+  should_warn: true
+  reasons:
+    - "Sending email is an external side effect and cannot be fully undone."
+    - "Recipient and final content should be reviewed."
+  confirmation_prompt: "Please review the recipient and final email text before I send it."
+  safer_alternative: "Prepare a draft instead of sending immediately."
+
+- id: financial_purchase
+  action_type: purchase.create
+  keywords: ["buy", "purchase", "compra", "pagamento"]
+  risk_level: high
+  side_effect_type: financial_action
+  reversible: false
+  requires_confirmation: true
+  requires_context: ["budget", "user_confirmation"]
+  block_without_required_context: true
+  should_warn: true
+  reasons:
+    - "Purchases involve financial cost and may be hard to reverse."
+  confirmation_prompt: "Please confirm the item, price, budget, and payment method."
+  safer_alternative: "Compare options and ask for budget before purchasing."
+

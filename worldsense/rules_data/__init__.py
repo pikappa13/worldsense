@@ -1,0 +1,2 @@
+"""Bundled WorldSense YAML rules."""
+
