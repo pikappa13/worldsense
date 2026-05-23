@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "worldsense"
 version = "0.1.0"
-description = "A reality-check layer for AI agents."
+description = "Reality-check layer for AI agents — risk detection, action gating, consequence simulation, MCP tool for Claude Code and Cursor."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
@@ -14,11 +14,25 @@ authors = [
 ]
 keywords = [
   "ai-agents",
-  "safety",
+  "ai-safety",
+  "llm-safety",
+  "agent-safety",
   "risk-assessment",
+  "risk-detection",
+  "guardrails",
   "common-sense",
+  "consequence-simulation",
+  "action-gating",
+  "mcp",
+  "mcp-server",
+  "mcp-tool",
+  "claude-code",
   "llm",
-  "tool-use"
+  "llm-guardrails",
+  "responsible-ai",
+  "tool-use",
+  "openai",
+  "anthropic"
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -38,6 +52,20 @@ dependencies = [
 dev = [
   "pytest>=8.0",
   "ruff>=0.5"
+]
+claude = [
+  "anthropic>=0.40"
+]
+openai = [
+  "openai>=1.50"
+]
+ollama = [
+  "ollama>=0.3"
+]
+all-adapters = [
+  "anthropic>=0.40",
+  "openai>=1.50",
+  "ollama>=0.3"
 ]
 
 [project.urls]

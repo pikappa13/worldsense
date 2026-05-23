@@ -1,3 +1,18 @@
+"""OpenAI adapter for WorldSense LLM-assisted analysis.
+
+Install the OpenAI SDK separately:
+    pip install openai
+
+Usage:
+    import openai
+    from worldsense import RealityEngine
+    from worldsense.adapters.openai_adapter import OpenAIAdapter
+
+    client = openai.OpenAI()
+    engine = RealityEngine(adapter=OpenAIAdapter(client))
+    analysis = engine.analyze("Ho dormito 2 ore ma devo guidare 3 ore.")
+"""
+
 from __future__ import annotations
 
 import json
@@ -7,7 +22,7 @@ from worldsense.adapters.base import LLMMessage
 
 
 class OpenAIAdapter:
-    """Small optional adapter for OpenAI chat-style JSON calls.
+    """Adapter for OpenAI chat completion models with JSON mode.
 
     The package does not depend on openai. Install it separately when using this adapter.
     """
@@ -17,10 +32,9 @@ class OpenAIAdapter:
         self.model = model
 
     def complete_json(self, messages: list[LLMMessage]) -> dict:
-        response = self.client.responses.create(
+        response = self.client.chat.completions.create(
             model=self.model,
-            input=[{"role": message.role, "content": message.content} for message in messages],
-            text={"format": {"type": "json_object"}},
+            messages=[{"role": msg.role, "content": msg.content} for msg in messages],
+            response_format={"type": "json_object"},
         )
-        return json.loads(response.output_text)
-
+        return json.loads(response.choices[0].message.content)

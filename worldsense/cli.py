@@ -41,11 +41,22 @@ def build_parser() -> argparse.ArgumentParser:
     validate = subparsers.add_parser("validate", help="Validate bundled rules and benchmark data.")
     validate.add_argument("--dataset", default="data/seed_scenarios.jsonl")
 
+    subparsers.add_parser(
+        "mcp",
+        help="Start the WorldSense MCP server (stdin/stdout JSON-RPC 2.0).",
+    )
+
     return parser
 
 
 def main() -> None:
     args = build_parser().parse_args()
+
+    if args.command == "mcp":
+        from worldsense.mcp_server import run_stdio
+        run_stdio()
+        return
+
     engine = RealityEngine()
 
     if args.command == "analyze":

@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use WorldSense in your research or project, please cite it as below."
+type: software
+title: "WorldSense: A Reality-Check Layer for AI Agents"
+abstract: >
+  WorldSense is an open source Python library and MCP server that adds a practical
+  judgment layer to LLMs, chatbots, and AI agents. It detects hidden risks, missing
+  context, irreversible actions, and real-world consequences before the AI answers or
+  acts — returning a structured JSON analysis with risk level, triggered categories,
+  consequence simulation, action gating, and rewrite guidance.
+authors:
+  - name: "WorldSense contributors"
+repository-code: "https://github.com/pikappa13/worldsense"
+url: "https://github.com/pikappa13/worldsense"
+license: Apache-2.0
+version: "0.1.0"
+keywords:
+  - AI safety
+  - LLM safety
+  - agent safety
+  - guardrails
+  - risk detection
+  - consequence simulation
+  - action gating
+  - MCP
+  - responsible AI
+  - common sense AI

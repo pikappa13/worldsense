@@ -11,18 +11,51 @@ from worldsense.rewrite import build_rewrite_guidance
 from worldsense.risk import level_from_score, max_risk, risk_score_for_consequence
 from worldsense.schemas import (
     ActionAssessment,
+    Consequence,
+    ImplicitContext,
+    ProbabilityLevel,
     Recommendation,
     RealityAnalysis,
+    RewriteGuidance,
     RiskAssessment,
     RiskCategory,
     RiskLevel,
+    SeverityLevel,
+    TimeHorizon,
 )
 from worldsense.social import assess_social_context
 from worldsense.uncertainty import detect_uncertainty
 
 
 class RealityEngine:
-    """Rule-based reality-check engine for LLM responses and agent actions."""
+    """Reality-check engine for LLM responses and agent actions.
+
+    Pass an optional ``adapter`` to enable LLM-assisted analysis on top of
+    the rule-based core. Without an adapter the engine works fully offline.
+
+    Example (Claude)::
+
+        import anthropic
+        from worldsense import RealityEngine
+        from worldsense.adapters.claude_adapter import ClaudeAdapter
+
+        engine = RealityEngine(adapter=ClaudeAdapter(anthropic.Anthropic()))
+
+    Example (OpenAI)::
+
+        import openai
+        from worldsense import RealityEngine
+        from worldsense.adapters.openai_adapter import OpenAIAdapter
+
+        engine = RealityEngine(adapter=OpenAIAdapter(openai.OpenAI()))
+    """
+
+    def __init__(self, adapter: Any | None = None) -> None:
+        self._adapter = adapter
+
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
 
     def analyze(
         self,
@@ -33,9 +66,22 @@ class RealityEngine:
     ) -> RealityAnalysis:
         context = context or {}
         intent = parse_intent(user_message)
-        implicit_context = extract_implicit_context(user_message, proposed_response)
+
+        if self._adapter is not None:
+            implicit_context = self._llm_extract_context(user_message, proposed_response)
+        else:
+            implicit_context = extract_implicit_context(user_message, proposed_response)
+
         world_state = build_world_state(user_message, implicit_context)
         consequences, triggered_rules = generate_consequences(user_message, proposed_response)
+
+        if self._adapter is not None:
+            llm_consequences = self._llm_simulate_consequences(user_message, proposed_response)
+            existing_descs = {c.description for c in consequences}
+            for c in llm_consequences:
+                if c.description not in existing_descs:
+                    consequences.append(c)
+
         constraint_violations = detect_constraint_violations(user_message, proposed_response)
         uncertainty_assessment = detect_uncertainty(
             user_message,
@@ -96,7 +142,11 @@ class RealityEngine:
 
         recommendations = self._build_recommendations(triggered_rules, action_assessment, risk_level)
         social_assessment = assess_social_context(user_message, proposed_response)
-        rewrite_guidance = build_rewrite_guidance(risk_level, consequences)
+
+        if self._adapter is not None:
+            rewrite_guidance = self._llm_rewrite_guidance(user_message, proposed_response, risk_level)
+        else:
+            rewrite_guidance = build_rewrite_guidance(risk_level, consequences)
 
         return RealityAnalysis(
             intent=intent,
@@ -122,6 +172,104 @@ class RealityEngine:
         context: dict[str, Any] | None = None,
     ) -> ActionAssessment:
         return evaluate_agent_action(action, context)
+
+    # ------------------------------------------------------------------
+    # LLM-assisted helpers (only called when self._adapter is set)
+    # ------------------------------------------------------------------
+
+    def _llm_extract_context(
+        self, user_message: str, proposed_response: str | None
+    ) -> ImplicitContext:
+        from worldsense.adapters.base import LLMMessage
+        from worldsense.prompts import ANALYZE_IMPLICIT_CONTEXT_PROMPT
+
+        user_content = f"User message: {user_message}"
+        if proposed_response:
+            user_content += f"\n\nProposed response: {proposed_response}"
+
+        try:
+            data = self._adapter.complete_json([
+                LLMMessage(role="system", content=ANALYZE_IMPLICIT_CONTEXT_PROMPT),
+                LLMMessage(role="user", content=user_content),
+            ])
+            return ImplicitContext(
+                signals=data.get("signals", []),
+                constraints=data.get("constraints", []),
+                assumptions=data.get("assumptions", []),
+                missing_information=data.get("missing_information", []),
+            )
+        except Exception:  # noqa: BLE001
+            return extract_implicit_context(user_message, proposed_response)
+
+    def _llm_simulate_consequences(
+        self, user_message: str, proposed_response: str | None
+    ) -> list[Consequence]:
+        from worldsense.adapters.base import LLMMessage
+        from worldsense.prompts import SIMULATE_CONSEQUENCES_PROMPT
+
+        user_content = f"User message: {user_message}"
+        if proposed_response:
+            user_content += f"\n\nProposed response: {proposed_response}"
+
+        try:
+            data = self._adapter.complete_json([
+                LLMMessage(role="system", content=SIMULATE_CONSEQUENCES_PROMPT),
+                LLMMessage(role="user", content=user_content),
+            ])
+            results: list[Consequence] = []
+            for item in data.get("consequences", []):
+                try:
+                    results.append(Consequence(
+                        description=item["description"],
+                        category=RiskCategory(item.get("category", "operational")),
+                        probability=ProbabilityLevel(item.get("probability", "unknown")),
+                        severity=SeverityLevel(item.get("severity", "medium")),
+                        time_horizon=TimeHorizon(item.get("time_horizon", "unknown")),
+                        reversible=item.get("reversible"),
+                        mitigation=item.get("mitigation"),
+                    ))
+                except (KeyError, ValueError):
+                    continue
+            return results
+        except Exception:  # noqa: BLE001
+            return []
+
+    def _llm_rewrite_guidance(
+        self,
+        user_message: str,
+        proposed_response: str | None,
+        risk_level: RiskLevel,
+    ) -> RewriteGuidance:
+        from worldsense.adapters.base import LLMMessage
+        from worldsense.prompts import REWRITE_RESPONSE_PROMPT
+
+        if risk_level in (RiskLevel.NONE, RiskLevel.LOW):
+            return build_rewrite_guidance(risk_level, [])
+
+        user_content = (
+            f"User message: {user_message}\n"
+            f"Risk level: {risk_level}\n"
+        )
+        if proposed_response:
+            user_content += f"\nProposed response: {proposed_response}"
+
+        try:
+            data = self._adapter.complete_json([
+                LLMMessage(role="system", content=REWRITE_RESPONSE_PROMPT),
+                LLMMessage(role="user", content=user_content),
+            ])
+            return RewriteGuidance(
+                rewrite_strategy=data.get("rewrite_strategy"),
+                must_include=data.get("must_include", []),
+                avoid=data.get("avoid", []),
+                tone=data.get("tone"),
+            )
+        except Exception:  # noqa: BLE001
+            return build_rewrite_guidance(risk_level, [])
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
 
     def _build_recommendations(
         self,
