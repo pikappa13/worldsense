@@ -252,14 +252,23 @@ worldsense validate
 
 ## Documentation
 
-- [Project blueprint](docs/PROJECT_BLUEPRINT.md)
-- [Risk taxonomy](docs/TAXONOMY.md)
-- [Practical examples](docs/EXAMPLES.md)
+**Understanding WorldSense**
+- [Design philosophy](docs/PHILOSOPHY.md) — 15 explicit principles behind every decision
+- [Comparison with other tools](docs/COMPARISON.md) — how WorldSense differs from RAG, Guardrails, LangChain, moderation APIs, and more
+- [Honest critique](docs/CRITIQUES.md) — limitations, risks, and what not to claim
+- [Project blueprint](docs/PROJECT_BLUEPRINT.md) — detailed architecture
+
+**Using WorldSense**
+- [Integrations](docs/INTEGRATIONS.md) — LangChain, LlamaIndex, AutoGen, CrewAI, FastAPI, OpenAI, Ollama
+- [MCP server](docs/MCP_SERVER.md) — Claude Code, Cursor, Claude Desktop setup
+- [Practical examples](docs/EXAMPLES.md) — 10 full input/output walkthroughs
+- [Risk taxonomy](docs/TAXONOMY.md) — 21 categories with definitions and signals
+
+**Contributing**
+- [Roadmap](ROADMAP.md) — phases 0–6 with current status
+- [Benchmark plan](benchmark/README.md) — evaluation categories and metrics
+- [Seed dataset](data/seed_scenarios.jsonl) — 20 annotated scenarios
 - [Internal LLM prompts](docs/INTERNAL_PROMPTS.md)
-- [Integrations](docs/INTEGRATIONS.md)
-- [Project name options](docs/NAMES.md)
-- [Benchmark plan](benchmark/README.md)
-- [Seed dataset](data/seed_scenarios.jsonl)
 
 ## Initial Risk Categories
 
