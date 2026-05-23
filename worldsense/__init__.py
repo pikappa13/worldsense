@@ -4,6 +4,7 @@ from worldsense.engine import RealityEngine
 from worldsense.evaluation import run_benchmark
 from worldsense.schemas import ActionAssessment, RealityAnalysis, RiskLevel
 from worldsense.taxonomy import get_category_definition, load_taxonomy
+from worldsense.validation import validate_project
 
 __all__ = [
     "ActionAssessment",
@@ -13,4 +14,5 @@ __all__ = [
     "get_category_definition",
     "load_taxonomy",
     "run_benchmark",
+    "validate_project",
 ]

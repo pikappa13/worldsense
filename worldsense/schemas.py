@@ -194,3 +194,16 @@ class BenchmarkReport(BaseModel):
     failed: int
     pass_rate: float
     results: list[ScenarioEvaluation]
+
+
+class ValidationIssue(BaseModel):
+    source: str
+    item_id: str | None = None
+    message: str
+    severity: RiskLevel = RiskLevel.HIGH
+
+
+class ValidationReport(BaseModel):
+    passed: bool
+    checked_files: list[str] = Field(default_factory=list)
+    issues: list[ValidationIssue] = Field(default_factory=list)

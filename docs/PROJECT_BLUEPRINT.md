@@ -188,6 +188,8 @@ if decision.should_block:
     raise PermissionError(decision.recommended_confirmation_prompt)
 ```
 
+See `docs/INTEGRATIONS.md` for framework-specific examples.
+
 ## Differentiation
 
 WorldSense differs from:

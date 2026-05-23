@@ -40,6 +40,11 @@ dev = [
   "ruff>=0.5"
 ]
 
+[project.urls]
+Homepage = "https://github.com/pikappa13/worldsense"
+Repository = "https://github.com/pikappa13/worldsense"
+Issues = "https://github.com/pikappa13/worldsense/issues"
+
 [project.scripts]
 worldsense = "worldsense.cli:main"
 

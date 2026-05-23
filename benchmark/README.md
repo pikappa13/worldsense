@@ -42,3 +42,5 @@ Use a pass-rate threshold in CI:
 ```bash
 worldsense benchmark data/seed_scenarios.jsonl --fail-under 0.7
 ```
+
+The repository CI runs validation and the seed benchmark on every push and pull request.

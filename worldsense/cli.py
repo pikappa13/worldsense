@@ -6,6 +6,7 @@ from typing import Any
 
 from worldsense.engine import RealityEngine
 from worldsense.evaluation import run_benchmark
+from worldsense.validation import validate_project
 
 
 def _json_arg(value: str | None) -> dict[str, Any] | None:
@@ -37,6 +38,9 @@ def build_parser() -> argparse.ArgumentParser:
     benchmark.add_argument("path")
     benchmark.add_argument("--fail-under", type=float, default=None)
 
+    validate = subparsers.add_parser("validate", help="Validate bundled rules and benchmark data.")
+    validate.add_argument("--dataset", default="data/seed_scenarios.jsonl")
+
     return parser
 
 
@@ -57,9 +61,14 @@ def main() -> None:
             "description": args.description,
         }
         result = engine.evaluate_action(action=action, context=args.context)
-    else:
+    elif args.command == "benchmark":
         result = run_benchmark(args.path, engine=engine)
         if args.fail_under is not None and result.pass_rate < args.fail_under:
+            print(result.model_dump_json(indent=2))
+            raise SystemExit(1)
+    else:
+        result = validate_project(args.dataset)
+        if not result.passed:
             print(result.model_dump_json(indent=2))
             raise SystemExit(1)
 

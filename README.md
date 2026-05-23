@@ -105,6 +105,12 @@ worldsense benchmark data/seed_scenarios.jsonl
 The bundled seed benchmark currently covers 20 scenarios across destructive actions, travel
 realism, social escalation, medical urgency, privacy, overconfidence, and missing context.
 
+Validate rules, taxonomy, and dataset:
+
+```bash
+worldsense validate
+```
+
 ## Core Concepts
 
 - Intent parsing: identify what the user or agent is trying to do.
@@ -122,6 +128,7 @@ realism, social escalation, medical urgency, privacy, overconfidence, and missin
 - [Risk taxonomy](docs/TAXONOMY.md)
 - [Practical examples](docs/EXAMPLES.md)
 - [Internal LLM prompts](docs/INTERNAL_PROMPTS.md)
+- [Integrations](docs/INTEGRATIONS.md)
 - [Project name options](docs/NAMES.md)
 - [Benchmark plan](benchmark/README.md)
 - [Seed dataset](data/seed_scenarios.jsonl)
