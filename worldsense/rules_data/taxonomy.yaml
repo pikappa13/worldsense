@@ -1,0 +1,127 @@
+- category: physical_safety
+  definition: "Risk of bodily harm or physical accident."
+  examples: ["Driving while sleep deprived", "Unsafe physical activity"]
+  textual_signals: ["stanco", "dormito poco", "drive tired", "dangerous"]
+  minimum_risk_level: high
+  mitigations: ["Delay action", "Use safer alternative", "Warn clearly"]
+- category: medical
+  definition: "Health or food safety risk."
+  examples: ["Food left out overnight", "Severe symptoms"]
+  textual_signals: ["dolore", "cibo fuori", "symptoms", "medication"]
+  minimum_risk_level: high
+  mitigations: ["Avoid certainty", "Recommend professional help when appropriate"]
+- category: mental_health
+  definition: "Acute distress or impaired decision-making."
+  examples: ["Burnout", "Hopelessness", "Panic"]
+  textual_signals: ["mollare tutto", "non ce la faccio", "hopeless"]
+  minimum_risk_level: high
+  mitigations: ["Slow down decisions", "Encourage support"]
+- category: legal
+  definition: "Potential legal exposure."
+  examples: ["Contracts", "Threats", "Illegal requests"]
+  textual_signals: ["contratto", "denuncia", "illegal"]
+  minimum_risk_level: medium
+  mitigations: ["Ask for context", "Suggest qualified counsel"]
+- category: financial
+  definition: "Money, purchases, debt, or irreversible cost."
+  examples: ["Expensive purchase", "Investment"]
+  textual_signals: ["compra", "pagamento", "budget", "invest"]
+  minimum_risk_level: medium
+  mitigations: ["Require budget", "Confirm before purchase"]
+- category: privacy
+  definition: "Exposure of personal or sensitive data."
+  examples: ["Private documents", "Doxxing", "Credentials"]
+  textual_signals: ["documento", "numero privato", "password", "token"]
+  minimum_risk_level: high
+  mitigations: ["Redact", "Confirm recipient", "Minimize data"]
+- category: cybersecurity
+  definition: "Security-sensitive systems, permissions, credentials, or commands."
+  examples: ["chmod 777", "sudo command", "API tokens"]
+  textual_signals: ["sudo", "chmod", "token", "permission"]
+  minimum_risk_level: high
+  mitigations: ["Least privilege", "Review command", "Sandbox"]
+- category: data_loss
+  definition: "Loss, corruption, or destructive modification of data."
+  examples: ["Delete files", "Drop database"]
+  textual_signals: ["delete", "drop table", "rm -rf", "overwrite"]
+  minimum_risk_level: high
+  mitigations: ["Backup", "Dry-run", "Confirmation"]
+- category: reputation
+  definition: "Damage to public, professional, or social standing."
+  examples: ["Public complaint", "Aggressive email"]
+  textual_signals: ["pubblica", "cliente", "capo", "social"]
+  minimum_risk_level: medium
+  mitigations: ["Draft review", "Neutral tone"]
+- category: social_conflict
+  definition: "Escalation or relationship friction."
+  examples: ["Angry reply", "Ultimatum"]
+  textual_signals: ["litigare", "duro", "accusa", "angry"]
+  minimum_risk_level: medium
+  mitigations: ["De-escalate", "Clarify goal"]
+- category: workplace
+  definition: "Professional hierarchy, employment, client, or manager risk."
+  examples: ["Reply to boss", "Quit today"]
+  textual_signals: ["capo", "manager", "cliente", "licenziarmi"]
+  minimum_risk_level: medium
+  mitigations: ["Professional tone", "Cooling-off period"]
+- category: relationship
+  definition: "Family, romantic, or close relationship risk."
+  examples: ["Partner conflict", "Breakup message"]
+  textual_signals: ["partner", "relazione", "famiglia"]
+  minimum_risk_level: medium
+  mitigations: ["Avoid escalation", "State needs calmly"]
+- category: travel_logistics
+  definition: "Unrealistic schedule, travel time, or logistics."
+  examples: ["Five cities in one day", "No buffer"]
+  textual_signals: ["un giorno", "5 citta", "tight schedule"]
+  minimum_risk_level: medium
+  mitigations: ["Add buffers", "Reduce scope"]
+- category: operational
+  definition: "Execution risk in systems, workflows, or organizations."
+  examples: ["Production deployment", "Bulk calendar update"]
+  textual_signals: ["production", "deploy", "all meetings"]
+  minimum_risk_level: medium
+  mitigations: ["Staged rollout", "Rollback plan"]
+- category: irreversible_action
+  definition: "Action that is impossible or hard to undo."
+  examples: ["Send email", "Buy item", "Delete data"]
+  textual_signals: ["send", "buy", "delete", "publish"]
+  minimum_risk_level: high
+  mitigations: ["Confirmation", "Draft first", "Backup"]
+- category: public_communication
+  definition: "Communication sent outside a private drafting context."
+  examples: ["Email", "Social post", "Announcement"]
+  textual_signals: ["send", "publish", "post", "email"]
+  minimum_risk_level: medium
+  mitigations: ["Review audience", "Confirm content"]
+- category: child_safety
+  definition: "Safety risk involving minors."
+  examples: ["Children", "School", "Underage user"]
+  textual_signals: ["bambino", "minor", "school"]
+  minimum_risk_level: high
+  mitigations: ["Conservative handling", "Escalate when needed"]
+- category: third_party_harm
+  definition: "Risk of harm to people other than the user."
+  examples: ["Publishing private info", "Bulk cancellations"]
+  textual_signals: ["persona", "cliente", "pubblica", "all meetings"]
+  minimum_risk_level: medium
+  mitigations: ["Check consent", "Minimize impact"]
+- category: misinformation
+  definition: "Incorrect information may mislead decisions."
+  examples: ["Unsupported factual claim", "Bad citation"]
+  textual_signals: ["fact", "source", "citation"]
+  minimum_risk_level: medium
+  mitigations: ["Verify", "Cite sources"]
+- category: overconfidence
+  definition: "Unsupported certainty or outdated claims."
+  examples: ["Surely latest price", "Guaranteed result"]
+  textual_signals: ["sicuramente", "definitely", "guaranteed", "latest"]
+  minimum_risk_level: medium
+  mitigations: ["State uncertainty", "Verify current info"]
+- category: missing_context
+  definition: "Essential context is absent."
+  examples: ["Best hotel", "Delete useless files"]
+  textual_signals: ["best", "migliore", "cheapest", "unclear"]
+  minimum_risk_level: low
+  mitigations: ["Ask targeted questions"]
+

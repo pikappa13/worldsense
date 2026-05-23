@@ -23,8 +23,10 @@
   triggers:
     keyword_groups:
       - ["capo", "rispondere"]
+      - ["capo", "rispondi"]
       - ["manager", "mail"]
       - ["boss", "reply"]
+      - ["cliente", "torto"]
   risk_category: workplace
   min_risk_level: medium
   probability: medium
@@ -79,6 +81,8 @@
   triggers:
     keyword_groups:
       - ["sicuramente", "dati"]
+      - ["sicuramente", "attuale"]
+      - ["prezzo", "attuale"]
       - ["certainly", "latest"]
       - ["definitely", "best"]
   risk_category: overconfidence
@@ -91,7 +95,7 @@
     - "The answer may present uncertain or outdated information as fact."
     - "The user may make a decision based on unsupported confidence."
   mitigation: "Separate known facts from assumptions and verify time-sensitive claims."
-  recommended_action: reduce_confidence_and_request_verification
+  recommended_action: verify_or_refuse_to_guess
   recommendation: "Flag unsupported confidence and ask for verification when needed."
 
 - id: impossible_multi_city_trip
@@ -150,3 +154,58 @@
   mitigation: "Refuse doxxing requests and require confirmation for sensitive user documents."
   recommended_action: refuse_or_require_privacy_confirmation
   recommendation: "Protect private data and avoid unauthorized disclosure."
+
+- id: relationship_escalation
+  triggers:
+    keyword_groups:
+      - ["messaggio duro", "partner"]
+      - ["angry", "partner"]
+      - ["duro", "relazione"]
+  risk_category: relationship
+  min_risk_level: medium
+  probability: medium
+  severity: medium
+  time_horizon: short_term
+  reversible: true
+  consequences:
+    - "A harsh message may escalate the conflict or reduce trust."
+    - "The wording may make resolution harder."
+  mitigation: "Clarify the goal and use specific non-accusatory wording."
+  recommended_action: deescalate_tone
+  recommendation: "De-escalate tone and clarify the desired outcome."
+
+- id: chest_pain_medical_urgency
+  triggers:
+    keyword_groups:
+      - ["dolore forte al petto"]
+      - ["chest pain"]
+  risk_category: medical
+  min_risk_level: critical
+  probability: unknown
+  severity: critical
+  time_horizon: immediate
+  reversible: false
+  consequences:
+    - "Severe chest pain can indicate a time-sensitive medical emergency."
+    - "Delaying help may increase the chance of serious harm."
+  mitigation: "Urge immediate local emergency help instead of casual advice."
+  recommended_action: urge_immediate_help
+  recommendation: "Treat severe chest pain as urgent and advise immediate help."
+
+- id: underspecified_travel_booking
+  triggers:
+    keyword_groups:
+      - ["prenotami", "viaggio", "economico"]
+      - ["book", "cheapest", "trip"]
+  risk_category: travel_logistics
+  min_risk_level: medium
+  probability: medium
+  severity: medium
+  time_horizon: short_term
+  reversible: false
+  consequences:
+    - "A booking may not match the user's dates, budget, route, or preferences."
+    - "Cheap options can introduce hidden time or cancellation costs."
+  mitigation: "Ask for dates, destination, travelers, budget, and constraints before booking."
+  recommended_action: ask_clarifying_questions
+  recommendation: "Ask for travel details before booking."

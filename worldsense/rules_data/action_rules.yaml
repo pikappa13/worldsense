@@ -2,6 +2,7 @@
   action_type: filesystem.delete
   keywords: ["delete", "remove", "cancella", "rm -rf"]
   risk_level: high
+  risk_categories: ["data_loss", "irreversible_action"]
   side_effect_type: destructive
   reversible: false
   requires_confirmation: true
@@ -18,6 +19,8 @@
   action_type: shell.run
   keywords: ["rm -rf", "format", "del /s", "chmod 777", "sudo"]
   risk_level: high
+  risk_categories: ["data_loss", "cybersecurity", "operational"]
+  match_mode: type_and_keyword
   side_effect_type: destructive_or_security_sensitive
   reversible: false
   requires_confirmation: true
@@ -34,6 +37,7 @@
   action_type: email.send
   keywords: ["send", "email", "mail", "invia"]
   risk_level: medium
+  risk_categories: ["public_communication", "reputation"]
   side_effect_type: external_side_effect
   reversible: false
   requires_confirmation: true
@@ -50,6 +54,7 @@
   action_type: purchase.create
   keywords: ["buy", "purchase", "compra", "pagamento"]
   risk_level: high
+  risk_categories: ["financial", "irreversible_action"]
   side_effect_type: financial_action
   reversible: false
   requires_confirmation: true
@@ -65,6 +70,8 @@
   action_type: database.query
   keywords: ["drop table", "truncate", "delete from", "drop database"]
   risk_level: critical
+  risk_categories: ["data_loss", "operational", "irreversible_action"]
+  match_mode: type_and_keyword
   side_effect_type: destructive
   reversible: false
   requires_confirmation: true
@@ -81,6 +88,7 @@
   action_type: calendar.update
   keywords: ["cancel all", "delete all", "sposta tutti", "cancella tutti"]
   risk_level: medium
+  risk_categories: ["operational", "third_party_harm"]
   side_effect_type: external_side_effect
   reversible: true
   requires_confirmation: true
@@ -96,6 +104,7 @@
   action_type: social.post
   keywords: ["publish", "post", "pubblica"]
   risk_level: medium
+  risk_categories: ["public_communication", "reputation"]
   side_effect_type: public_communication
   reversible: false
   requires_confirmation: true
@@ -111,6 +120,8 @@
   action_type: system.permissions
   keywords: ["chmod 777", "grant all", "everyone full control"]
   risk_level: high
+  risk_categories: ["cybersecurity", "operational"]
+  match_mode: type_and_keyword
   side_effect_type: security_sensitive
   reversible: true
   requires_confirmation: true

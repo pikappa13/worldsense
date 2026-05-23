@@ -5,6 +5,7 @@ import json
 from typing import Any
 
 from worldsense.engine import RealityEngine
+from worldsense.evaluation import run_benchmark
 
 
 def _json_arg(value: str | None) -> dict[str, Any] | None:
@@ -32,6 +33,10 @@ def build_parser() -> argparse.ArgumentParser:
     action.add_argument("--description", default=None)
     action.add_argument("--context", type=_json_arg, default=None)
 
+    benchmark = subparsers.add_parser("benchmark", help="Run a JSONL benchmark dataset.")
+    benchmark.add_argument("path")
+    benchmark.add_argument("--fail-under", type=float, default=None)
+
     return parser
 
 
@@ -45,13 +50,18 @@ def main() -> None:
             proposed_response=args.response,
             context=args.context,
         )
-    else:
+    elif args.command == "action":
         action = args.action or {
             "tool": args.tool,
             "target": args.target,
             "description": args.description,
         }
         result = engine.evaluate_action(action=action, context=args.context)
+    else:
+        result = run_benchmark(args.path, engine=engine)
+        if args.fail_under is not None and result.pass_rate < args.fail_under:
+            print(result.model_dump_json(indent=2))
+            raise SystemExit(1)
 
     print(result.model_dump_json(indent=2))
 

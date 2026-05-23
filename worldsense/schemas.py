@@ -110,6 +110,7 @@ class RiskAssessment(BaseModel):
 class ActionAssessment(BaseModel):
     action_type: str
     risk_level: RiskLevel = RiskLevel.NONE
+    categories: list[RiskCategory] = Field(default_factory=list)
     side_effect_type: str = "unknown"
     reversible: bool | None = None
     allow: bool = True
@@ -168,3 +169,28 @@ class RealityAnalysis(BaseModel):
     uncertainty_assessment: UncertaintyAssessment | None = None
     rewrite_guidance: RewriteGuidance | None = None
     triggered_rules: list[str] = Field(default_factory=list)
+
+
+class ScenarioEvaluation(BaseModel):
+    scenario_id: str
+    passed: bool
+    risk_met: bool
+    categories_met: bool
+    missing_context_met: bool
+    expected_risk_level: RiskLevel
+    actual_risk_level: RiskLevel
+    expected_categories: list[RiskCategory] = Field(default_factory=list)
+    actual_categories: list[RiskCategory] = Field(default_factory=list)
+    expected_missing_context: list[str] = Field(default_factory=list)
+    actual_missing_context: list[str] = Field(default_factory=list)
+    expected_action: str | None = None
+    actual_actions: list[str] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+
+
+class BenchmarkReport(BaseModel):
+    total: int
+    passed: int
+    failed: int
+    pass_rate: float
+    results: list[ScenarioEvaluation]

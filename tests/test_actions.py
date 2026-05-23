@@ -14,6 +14,7 @@ def test_delete_files_requires_confirmation_and_target() -> None:
     )
 
     assert decision.risk_level == RiskLevel.HIGH
+    assert "data_loss" in decision.model_dump(mode="json")["categories"]
     assert decision.requires_confirmation is True
     assert decision.should_block is True
     assert "user_confirmation" in decision.required_context

@@ -31,3 +31,14 @@ The benchmark measures whether WorldSense catches risks that fluent LLM answers 
 The seed dataset is `data/seed_scenarios.jsonl`. Each row includes expected risk level, expected
 categories, expected missing information, and expected action.
 
+Run it with:
+
+```bash
+worldsense benchmark data/seed_scenarios.jsonl
+```
+
+Use a pass-rate threshold in CI:
+
+```bash
+worldsense benchmark data/seed_scenarios.jsonl --fail-under 0.7
+```

@@ -67,6 +67,8 @@ class RealityEngine:
 
         if implicit_context.missing_information:
             categories.append(RiskCategory.MISSING_CONTEXT)
+        if action_assessment:
+            categories.extend(action_assessment.categories)
         if constraint_violations:
             categories.extend(
                 RiskCategory.TRAVEL_LOGISTICS

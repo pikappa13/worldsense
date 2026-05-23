@@ -96,6 +96,15 @@ PowerShell-friendly form:
 worldsense action --tool filesystem.delete --target /tmp/data --description "Delete temporary files"
 ```
 
+Run the seed benchmark:
+
+```bash
+worldsense benchmark data/seed_scenarios.jsonl
+```
+
+The bundled seed benchmark currently covers 20 scenarios across destructive actions, travel
+realism, social escalation, medical urgency, privacy, overconfidence, and missing context.
+
 ## Core Concepts
 
 - Intent parsing: identify what the user or agent is trying to do.

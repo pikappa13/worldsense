@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from worldsense.rules import load_action_rules
-from worldsense.schemas import ActionAssessment, RiskLevel
+from worldsense.schemas import ActionAssessment, RiskCategory, RiskLevel
 
 
 def _value_is_present(value: Any) -> bool:
@@ -44,7 +44,14 @@ def evaluate_action(action: dict[str, Any], context: dict[str, Any] | None = Non
         keywords = [str(keyword).casefold() for keyword in rule.get("keywords", [])]
         type_matches = rule_type and rule_type in action_type.casefold()
         keyword_matches = keywords and any(keyword in action_text for keyword in keywords)
+        match_mode = rule.get("match_mode", "type_or_keyword")
 
+        if match_mode == "type_and_keyword" and type_matches and keyword_matches:
+            matched_rule = rule
+            matched_by_type = True
+            break
+        if match_mode == "type_and_keyword":
+            continue
         if type_matches:
             matched_rule = rule
             matched_by_type = True
@@ -66,10 +73,17 @@ def evaluate_action(action: dict[str, Any], context: dict[str, Any] | None = Non
     reasons = list(matched_rule.get("reasons", []))
     if not matched_by_type:
         reasons.append("Matched by keyword because no more specific action type rule matched.")
+    categories = [
+        RiskCategory(category)
+        for category in matched_rule.get("risk_categories", matched_rule.get("categories", []))
+    ]
+    if not categories and matched_rule.get("risk_category"):
+        categories = [RiskCategory(matched_rule["risk_category"])]
 
     return ActionAssessment(
         action_type=action_type,
         risk_level=RiskLevel(matched_rule.get("risk_level", "medium")),
+        categories=categories,
         side_effect_type=matched_rule.get("side_effect_type", "unknown"),
         reversible=matched_rule.get("reversible"),
         allow=not should_block,
