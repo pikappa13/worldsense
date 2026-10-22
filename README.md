@@ -51,8 +51,8 @@ consequences, recommendations, and optional action gating.
 ## What it is not
 
 WorldSense is not an LLM, a vector database, a RAG framework, a moderation API, a prompt template,
-or a replacement for domain experts. The MVP is intentionally rule-based and inspectable, with
-optional LLM adapters planned later.
+or a replacement for domain experts. The rule-based core is intentionally inspectable and works offline by default.
+Optional Claude, OpenAI, and Ollama adapters are also available for LLM-assisted analysis.
 
 ## Install
 
